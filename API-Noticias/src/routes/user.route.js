@@ -11,6 +11,7 @@ route.get("/", userController.findAll);
 route.get("/:id", userController.findById)
 //Rota para fazer atualização no banco de dados
 
+route.delete("/", userController.deleteByEmail)
 
 
 

@@ -30,6 +30,26 @@ const create  = async (req, res) =>{
 }
 
 /**
+ * deleta um usuário 
+ * @returns 
+ */
+const deleteByEmail = async (req, res) =>{
+    const { email } = req.query
+
+    if(!email){
+        res.status(400).send({ mensage:"missing email" })
+    }
+
+    const user = await userService.deleteService(email);
+
+    if(!user){
+        return res.status(400).send({ mensage:"error" })
+    }
+
+    return res.status(200).send();
+}
+
+/**
  * Encontra todos os usuario cadastrados
  * @returns Se não houver usuario retorna uma mensagem com status 400.
  * Se não retorna todos os usuarios 
@@ -68,5 +88,6 @@ const findById = async(req, res) =>{
 module.exports = {
     create,
     findAll, 
-    findById
+    findById,
+    deleteByEmail
 }
