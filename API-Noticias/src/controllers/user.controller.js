@@ -84,10 +84,35 @@ const findById = async(req, res) =>{
     res.send(user)
 }
 
+
+/**
+ * 
+ */
+const updateByEmail = async(req, res) =>{
+    //Recebe o email 
+    const email = req.query.email
+    const {nome, username, password} = req.body
+
+    if(!email){
+        return res.status(400).send({message: "Email não foi colacado!"})
+    }
+
+    const user = await userService.updateUserByEmail(email, nome, username, password)
+
+    if(!user){
+        return res.status(400).send({message: "Erro ao atualizar o usuario!"})
+    }
+   
+    return res.status(200).send(user)
+}
+
+
+
 /*Exportando as funções */
 module.exports = {
     create,
     findAll, 
     findById,
-    deleteByEmail
+    deleteByEmail,
+    updateByEmail
 }

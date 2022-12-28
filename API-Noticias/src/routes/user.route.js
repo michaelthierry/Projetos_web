@@ -13,6 +13,8 @@ route.get("/:id", userController.findById)
 
 route.delete("/", userController.deleteByEmail)
 
+route.patch("/", userController.updateByEmail)
+
 
 
 /*Exportando as rotas */
