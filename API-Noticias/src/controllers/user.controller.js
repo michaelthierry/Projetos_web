@@ -1,5 +1,5 @@
 const userService = require("../services/user.service")
-const mongoose = require("mongoose")
+
 
 /**
  * Cria um novo usuario na base de dados 
@@ -67,19 +67,8 @@ const findAll = async (req, res) =>{
  * @returns 
  */
 const findById = async(req, res) =>{
-    //Recebe o id do parametro da req
-    const id = req.params.id
-    //se esse id pertence não pertence a base de dados
-    if(!mongoose.Types.ObjectId.isValid(id)){
-        //Retorna a mensagem de erro
-        return res.status(400).send({message: "Este id é invalido."})
-    }
-    //Espera a tentativa de encontra o usuario na base de dados
-    const user  = await userService.findByIdService(id)
-    //Se o usuario não existe
-    if(!user){
-        return res.status(400).send({message: "Usuario não encontrado"})
-    }
+    //Recebe o user do paramentro da requisição do middleware
+    const user  = req.user;
     //Se existir
     res.send(user)
 }
