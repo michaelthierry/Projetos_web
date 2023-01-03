@@ -1,5 +1,5 @@
 //Importando o mongoose
-const mongoose = require("mongoose")
+import mongoose from "mongoose";
 //Criando o esquema de usuário
 const UserSchema = new mongoose.Schema({
     nome: {
@@ -23,4 +23,4 @@ const UserSchema = new mongoose.Schema({
 //Criando o modelo
 const User = mongoose.model("User", UserSchema)
 //Exportando o modelo criado
-module.exports = User
+export default User;
