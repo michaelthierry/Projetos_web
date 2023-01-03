@@ -1,23 +1,25 @@
 /**Importando o express */
-const route = require('express').Router()
+import express from "express";
 /*Importando as funçoes de controller */
-const userController = require("../controllers/user.controller")
+import userController  from "../controllers/user.controller.js";
 /*Importando middleare */
-const {validId, validUser} = require("../middlewares/global.middlewares")
+import {validId, validUser} from "../middlewares/global.middlewares.js";
+
+const router = express.Router();
 
 /*Rota que cadastar um usuario*/
-route.post("/",userController.create);
+router.post("/",userController.create);
 /*Rota que pega todos os usuarios */
-route.get("/", userController.findAll);
+router.get("/", userController.findAll);
 /*Encontra o usuario pelo ID */
-route.get("/:id", validId, validUser, userController.findById)
+router.get("/:id", validId, validUser, userController.findById)
 //Rota para fazer atualização no banco de dados
 
-route.delete("/", userController.deleteByEmail)
+router.delete("/", userController.deleteByEmail)
 
-route.patch("/", userController.updateByEmail)
+router.patch("/", userController.updateByEmail)
 
 
 
 /*Exportando as rotas */
-module.exports = route
+export default router
