@@ -1,4 +1,4 @@
-const userService = require("../services/user.service")
+import userService from "../services/user.service.js";
 
 
 /**
@@ -124,7 +124,7 @@ const updateByEmail = async(req, res) =>{
 
 
 /*Exportando as funções */
-module.exports = {
+export default {
     create,
     findAll, 
     findById,
