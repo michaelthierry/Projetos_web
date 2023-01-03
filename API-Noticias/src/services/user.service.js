@@ -1,4 +1,4 @@
-const User = require("../models/User")
+import User from "../models/User.js";
 
 const createService = (body) => User.create(body)
 
@@ -18,7 +18,7 @@ const updateUserByEmail = async (email, nome, username, password) => await User.
   );
 
 
-module.exports = {
+export default {
     createService,
     findAllService,
     findByIdService,
