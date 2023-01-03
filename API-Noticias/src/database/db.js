@@ -1,5 +1,5 @@
 //Importando o mongoose
-const mongoose = require('mongoose')
+import mongoose from 'mongoose';
 //função de conexão com a base de dados 
 
 const connectDatabase = () =>{
@@ -17,4 +17,4 @@ const connectDatabase = () =>{
     })
 }
 //Exportando a função de conexão
-module.exports = connectDatabase
+export default connectDatabase
