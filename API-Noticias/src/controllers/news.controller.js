@@ -1,4 +1,5 @@
 import {createService, findAllService} from "../services/news.service.js"
+import { ObjectId } from "mongoose";
 
 const create = async (req, res) => {
     try{
@@ -11,24 +12,32 @@ const create = async (req, res) => {
         await createService({
             title,
             text,
-            banner,
-            id: "objidfake"
+            user: {_id: "63a5e1b21d5d2124fa22eca4"}
         })
         res.send(201);
+
     }catch(err){
-        res.send(500).send({message: err.message});
+        res.status(500).send({message: err.message});
     }
 
    
 }
 
-const findAll = (req, res) => {
-    const news = [];
-
-    res.send(news);
+const findAll = async (req, res) => {
+    
+    try{
+        const news = await findAllService();
+        if(news.length === 0){
+            return res.status(400).send({message: "Não há noticias registradas!"});
+        }
+        res.send(news)
+    }catch(err){
+        res.status(500).send({message: err.message})
+    }
 }
 
-export default {
+
+export {
     create,
-    getAll
+    findAll
 }
