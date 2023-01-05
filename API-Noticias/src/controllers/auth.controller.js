@@ -12,7 +12,7 @@ const login = async (req, res) =>{
 
         const passwordIsvalid = bcrypt.compareSync(password, user.password)
 
-        if(!passwordIsvalid || !user){
+        if(!passwordIsvalid){
             return res.status(404).send({message: "Senha ou usuario invalidos"})
         }
         res.send("Login ok");
