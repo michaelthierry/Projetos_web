@@ -9,10 +9,6 @@ const NewsSchema = new mongoose.Schema({
         type:String,
         require: true,
     },
-    banner:{
-        type:String,
-        require: true,
-    },
     cratedAt:{
         type: Date,
         default: Date.now()
