@@ -1,29 +1,9 @@
 import {createService, findAllService} from "../services/news.service.js"
-import { ObjectId } from "mongoose";
 
 const create = async (req, res) => {
     try{
         const {title, text} = req.body;
-        const {authorization} = req.headers;
-        console.log(authorization);
-
-        if(!authorization){
-            return res.send(401)
-        }
-
-        const parts = authorization.split(" ");
-
-        if(parts.length !==  2){
-            return res.send(401);
-        }
-        const[schema, token] = parts; 
-
-        if(schema !== "Bearer"){
-            return res.send(401);
-        }
-    
-        console.log(parts)
-
+       
         if(!title || !text){
             req.status(400).send({message: "Submeta todos os campos para registrar"});
         }
@@ -31,7 +11,7 @@ const create = async (req, res) => {
         await createService({
             title,
             text,
-            user: {_id: "63a5e1b21d5d2124fa22eca4"}
+            user: req.userId
         })
         res.send(201);
 
