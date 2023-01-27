@@ -9,4 +9,8 @@ const countNews = () => News.countDocuments();
 
 const topNewsService = () => News.findOne().sort({ _id: -1 }).populate('user');
 
-export { createService, findAllService, countNews, topNewsService };
+// Encontra a noticia no banco de dados pelo id passado e a retorna.
+const findByIdService = (id) => News.findById(id).populate('user');
+
+// Exporta todas as funções
+export { createService, findAllService, countNews, topNewsService, findByIdService};

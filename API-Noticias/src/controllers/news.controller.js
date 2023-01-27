@@ -1,4 +1,5 @@
-import { createService, findAllService, countNews, topNewsService } from "../services/news.service.js"
+// Todas as importações dos serviços de news
+import { createService, findAllService, countNews, topNewsService, findByIdService } from "../services/news.service.js"
 
 const create = async (req, res) => {
     try {
@@ -103,8 +104,41 @@ const topNews = async (req, res) => {
 
 }
 
+/**
+ * Encontra uma noticia no banco de dados por meio de um id passado
+ * pela requisição
+ * @param {*} req requisição passada
+ * @param {*} res resposta obtida
+ */
+const findById = async (req, res) =>{
+    //tenta encontra a noticia 
+    try {
+        // pega o id passado pela requisição
+        const {id} = req.params;
+        // busca a noticia
+        const news = await findByIdService(id);
+        // Retorna a noticia se encontrada
+        return res.send({
+            news: {
+                id: news._id,
+                title: news.title,
+                text: news.text,
+                likes: news.likes,
+                comments: news.comments,
+                name: news.user.nome,
+                username: news.user.username
+            }
+        })        
+    } catch (err) {
+        //caso dê erro 
+        res.status(500).send({ message: err.message });
+    }
+}
+
+// Exportando as funções
 export {
     create,
     findAll,
-    topNews
+    topNews,
+    findById
 }
