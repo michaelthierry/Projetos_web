@@ -24,5 +24,17 @@ const byUserService = (id) => News.find({user: id}).sort({ _id: -1 }).populate('
 // Atualiza o titulo e o texto de uma noticia do usuario 
 const updateService = (id, title, text) => News.findOneAndUpdate({_id: id}, {title, text}, { rawResult: true});
 
+// Apaga uma noticia do banco de dados
+const eraseService = (id) => News.findOneAndDelete({_id: id});
+
 // Exporta todas as funções
-export { createService, findAllService, countNews, topNewsService, findByIdService, searchByTitleService, byUserService, updateService};
+export { createService, 
+        findAllService, 
+        countNews, 
+        topNewsService, 
+        findByIdService, 
+        searchByTitleService, 
+        byUserService, 
+        updateService,
+        eraseService,
+    };

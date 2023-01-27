@@ -1,5 +1,5 @@
 // Todas as importações dos serviços de news
-import { createService, findAllService, countNews, topNewsService, findByIdService, searchByTitleService, byUserService, updateService } from "../services/news.service.js"
+import { createService, findAllService, countNews, topNewsService, findByIdService, searchByTitleService, byUserService, updateService, eraseService } from "../services/news.service.js"
 
 const create = async (req, res) => {
     try {
@@ -210,7 +210,7 @@ const byUser = async (req, res) => {
 const update = async (req, res) => {
     // tenta atualizar uma  noticia
     try {
-        //Pega o titulo e o texto da reuisição
+        //Pega o titulo e o texto da requisição
         const {title, text} = req.body;
         //Pega o id da noticia a ser atualizada
         const {id} = req.params;
@@ -235,6 +235,31 @@ const update = async (req, res) => {
     }
 };
 
+/**
+ * Apaga uma noticia de um usuario 
+ * @param {*} req 
+ * @param {*} res 
+ */
+const erase = async (req, res) => {
+    // tenta apagar a noticia
+    try {
+        //Pega o id da noticia a ser apagada
+        const {id} = req.params;
+        // Encontrando a news no banco
+        const news = await findByIdService(id);
+        //confere se a noticia é mesmo do usuario
+        if (news.user._id != req.userId){
+            return res.status(400).send({message: "Você não pode apagar essa noticias!"});
+        }
+        //Apaga a noticia
+        await eraseService(id);
+        //Retorna uma mesagem de sucesso
+        return res.send({message: "Noticia apagada com sucesso!"})
+    } catch (err) {
+        // caso dê erro 
+        res.status(500).send({ message: err.message });
+    }
+};
 // Exportando as funções
 export {
     create,
@@ -243,5 +268,6 @@ export {
     findById,
     searchByTitle, 
     byUser,
-    update
+    update,
+    erase
 }
