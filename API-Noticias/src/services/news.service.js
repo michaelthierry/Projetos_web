@@ -21,5 +21,8 @@ const searchByTitleService = (title) => News.find({
 // Encontra as noticias de um usuario especifico
 const byUserService = (id) => News.find({user: id}).sort({ _id: -1 }).populate('user');
 
+// Atualiza o titulo e o texto de uma noticia do usuario 
+const updateService = (id, title, text) => News.findOneAndUpdate({_id: id}, {title, text}, { rawResult: true});
+
 // Exporta todas as funções
-export { createService, findAllService, countNews, topNewsService, findByIdService, searchByTitleService, byUserService};
+export { createService, findAllService, countNews, topNewsService, findByIdService, searchByTitleService, byUserService, updateService};

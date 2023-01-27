@@ -1,5 +1,5 @@
 // Todas as importações dos serviços de news
-import { createService, findAllService, countNews, topNewsService, findByIdService, searchByTitleService, byUserService } from "../services/news.service.js"
+import { createService, findAllService, countNews, topNewsService, findByIdService, searchByTitleService, byUserService, updateService } from "../services/news.service.js"
 
 const create = async (req, res) => {
     try {
@@ -200,7 +200,40 @@ const byUser = async (req, res) => {
         // caso dê erro 
         res.status(500).send({ message: err.message });
     }
-}
+};
+
+/**
+ * Atualiza uma noticia do usuario
+ * @param {*} req 
+ * @param {*} res 
+ */
+const update = async (req, res) => {
+    // tenta atualizar uma  noticia
+    try {
+        //Pega o titulo e o texto da reuisição
+        const {title, text} = req.body;
+        //Pega o id da noticia a ser atualizada
+        const {id} = req.params;
+        //Testa os dados do body
+        if (!title && !text){
+            res.status(400).send({message: "Submeta algum campo para atualizar"});
+        }
+        // Encontrando a news no banco
+        const news = await findByIdService(id);
+        //confere se a noticia é mesmo do usuario
+        if (news.user._id != req.userId){
+            return res.status(400).send({message: "Você não pode atualizar essa noticias!"});
+        }
+        //Atualiza a noticia
+        await updateService(id, title, text);
+        //Mensagem de sucesso
+        return res.send({message: "Noticia atualizada com sucesso!"})
+        
+    } catch (err) {
+        // caso dê erro 
+        res.status(500).send({ message: err.message });
+    }
+};
 
 // Exportando as funções
 export {
@@ -209,5 +242,6 @@ export {
     topNews,
     findById,
     searchByTitle, 
-    byUser
+    byUser,
+    update
 }
