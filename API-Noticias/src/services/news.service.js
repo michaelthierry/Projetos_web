@@ -27,6 +27,18 @@ const updateService = (id, title, text) => News.findOneAndUpdate({_id: id}, {tit
 // Apaga uma noticia do banco de dados
 const eraseService = (id) => News.findOneAndDelete({_id: id});
 
+// Adiciona um like na noticia passada
+const likeNewsService = (idNews, userId ) => News.findOneAndUpdate(
+    {_id: idNews, "likes.userId": {$nin: [userId]}}, 
+    {$push: {likes: {userId, created: new Date()}}}
+);
+
+// deleta um like na noticia passada
+const deleteLikeNewsService = (idNews, userId ) => News.findOneAndUpdate(
+    {_id: idNews}, 
+    {$pull: {likes: {userId}}}
+);
+
 // Exporta todas as funções
 export { createService, 
         findAllService, 
@@ -37,4 +49,6 @@ export { createService,
         byUserService, 
         updateService,
         eraseService,
+        likeNewsService,
+        deleteLikeNewsService
     };

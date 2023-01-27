@@ -1,5 +1,15 @@
 // Todas as importações dos serviços de news
-import { createService, findAllService, countNews, topNewsService, findByIdService, searchByTitleService, byUserService, updateService, eraseService } from "../services/news.service.js"
+import { createService, 
+    findAllService, 
+    countNews, 
+    topNewsService, 
+    findByIdService, 
+    searchByTitleService, 
+    byUserService, 
+    updateService, 
+    eraseService, 
+    likeNewsService,
+    deleteLikeNewsService } from "../services/news.service.js"
 
 const create = async (req, res) => {
     try {
@@ -260,6 +270,31 @@ const erase = async (req, res) => {
         res.status(500).send({ message: err.message });
     }
 };
+
+const likeNews = async (req, res) => {
+    // Tenta dar like na noticia
+    try {
+        // Pega o id da noticia
+        const {id} = req.params;
+        // Pega o id do usuario que esta dando o like
+        const userId = req.userId;
+        // adicionando o like a noticia 
+        const  newsLiked = await likeNewsService(id, userId);
+
+        if (!newsLiked){
+            await deleteLikeNewsService(id, userId);
+            return res.status(200).send({message: "Like removido"})
+        }
+
+        console.log(newsLiked);
+
+        res.send({message: "Like adicionado"})
+        
+    } catch (err) {
+        // caso dê erro 
+        res.status(500).send({ message: err.message });
+    }
+}
 // Exportando as funções
 export {
     create,
@@ -269,5 +304,6 @@ export {
     searchByTitle, 
     byUser,
     update,
-    erase
+    erase, 
+    likeNews
 }
