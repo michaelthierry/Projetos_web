@@ -18,5 +18,8 @@ const searchByTitleService = (title) => News.find({
 
 }).sort({ _id: -1 }).populate('user');
 
+// Encontra as noticias de um usuario especifico
+const byUserService = (id) => News.find({user: id}).sort({ _id: -1 }).populate('user');
+
 // Exporta todas as funções
-export { createService, findAllService, countNews, topNewsService, findByIdService, searchByTitleService};
+export { createService, findAllService, countNews, topNewsService, findByIdService, searchByTitleService, byUserService};

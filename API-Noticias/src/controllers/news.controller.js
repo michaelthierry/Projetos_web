@@ -1,5 +1,5 @@
 // Todas as importações dos serviços de news
-import { createService, findAllService, countNews, topNewsService, findByIdService, searchByTitleService } from "../services/news.service.js"
+import { createService, findAllService, countNews, topNewsService, findByIdService, searchByTitleService, byUserService } from "../services/news.service.js"
 
 const create = async (req, res) => {
     try {
@@ -171,11 +171,43 @@ const searchByTitle = async (req, res) => {
     }
 }
 
+/**
+ * Encontra todas as noticias de um usuario especifico
+ * @param {*} req requisição passada
+ * @param {*} res resposta obtida
+ */
+const byUser = async (req, res) => {
+    //tenta encontrar as noticias
+    try {
+        // pega o id do usuario logado
+        const id = req.userId;
+        // faz a busca no banco de dados
+        const news = await byUserService(id);
+        //mostra os dados obtidos
+        return res.send({
+            results: news.map(item => ({
+                id: item._id,
+                title: item.title,
+                text: item.text,
+                likes: item.likes,
+                comments: item.comments,
+                name: item.user.nome,
+                username: item.user.username
+            }))
+        });
+        
+    } catch (err) {
+        // caso dê erro 
+        res.status(500).send({ message: err.message });
+    }
+}
+
 // Exportando as funções
 export {
     create,
     findAll,
     topNews,
     findById,
-    searchByTitle
+    searchByTitle, 
+    byUser
 }

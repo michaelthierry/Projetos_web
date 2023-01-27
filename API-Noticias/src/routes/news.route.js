@@ -1,5 +1,5 @@
 import {Router} from "express";
-import {create, findAll, topNews, findById, searchByTitle} from "../controllers/news.controller.js"
+import {create, findAll, topNews, findById, searchByTitle, byUser} from "../controllers/news.controller.js"
 import { authMiddleware } from "../middlewares/auth.middleware.js";
 
 const router = Router();
@@ -12,6 +12,8 @@ router.get("/", findAll);
 router.get("/top", topNews);
 //Rota para pegar as noticias pelo titulo
 router.get("/search", searchByTitle);
+// Rota para pegar as noticias de um usuario especifico
+router.get("/byUser", authMiddleware, byUser)
 
 //Rota para pegar noticia pelo id
 router.get("/:id", authMiddleware, findById);
