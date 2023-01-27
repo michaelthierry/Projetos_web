@@ -1,5 +1,5 @@
 // Todas as importações dos serviços de news
-import { createService, findAllService, countNews, topNewsService, findByIdService } from "../services/news.service.js"
+import { createService, findAllService, countNews, topNewsService, findByIdService, searchByTitleService } from "../services/news.service.js"
 
 const create = async (req, res) => {
     try {
@@ -135,10 +135,47 @@ const findById = async (req, res) =>{
     }
 }
 
+/**
+ * Encontra todos as noticias de acordo com o titulo passado 
+ * @param {*} req requisição com o titulo
+ * @param {*} res resposta da consulta
+ */
+const searchByTitle = async (req, res) => {
+    // tenta encontra as noticias
+    try {
+        // Pega o titulo
+        const {title} = req.query;
+        // faz a busca no banco
+        const news = await searchByTitleService(title);
+        // caso não encontre nada
+        if(news.length === 0){
+            // mensagem de bad request
+            return res.status(400).send({message: "Não há notícias com esse titulo"});
+        }
+        //caso dê certo
+        return res.send({
+            results: news.map(item => ({
+                id: item._id,
+                title: item.title,
+                text: item.text,
+                likes: item.likes,
+                comments: item.comments,
+                name: item.user.nome,
+                username: item.user.username
+            }))
+        })
+        
+    } catch (err) {
+        // caso dê erro 
+        res.status(500).send({ message: err.message });
+    }
+}
+
 // Exportando as funções
 export {
     create,
     findAll,
     topNews,
-    findById
+    findById,
+    searchByTitle
 }

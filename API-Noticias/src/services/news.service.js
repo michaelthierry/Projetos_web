@@ -12,5 +12,11 @@ const topNewsService = () => News.findOne().sort({ _id: -1 }).populate('user');
 // Encontra a noticia no banco de dados pelo id passado e a retorna.
 const findByIdService = (id) => News.findById(id).populate('user');
 
+// Encontra a noticia no banco por meio da titulo passado
+const searchByTitleService = (title) => News.find({
+    title: {$regex: `${title || ""}`, $options: "i"},
+
+}).sort({ _id: -1 }).populate('user');
+
 // Exporta todas as funções
-export { createService, findAllService, countNews, topNewsService, findByIdService};
+export { createService, findAllService, countNews, topNewsService, findByIdService, searchByTitleService};
