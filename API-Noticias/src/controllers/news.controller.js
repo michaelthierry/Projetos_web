@@ -9,7 +9,10 @@ import { createService,
     updateService, 
     eraseService, 
     likeNewsService,
-    deleteLikeNewsService } from "../services/news.service.js"
+    deleteLikeNewsService,
+    addComentService,
+    deleteComentService
+} from "../services/news.service.js"
 
 const create = async (req, res) => {
     try {
@@ -271,6 +274,12 @@ const erase = async (req, res) => {
     }
 };
 
+/**
+ * Adiciona ou remover um like dado pelo usuario
+ * @param {*} req 
+ * @param {*} res 
+ * @returns 
+ */
 const likeNews = async (req, res) => {
     // Tenta dar like na noticia
     try {
@@ -294,6 +303,73 @@ const likeNews = async (req, res) => {
         // caso dê erro 
         res.status(500).send({ message: err.message });
     }
+};
+
+/**
+ * Adiciona um comentario em uma news
+ * @param {*} req 
+ * @param {*} res 
+ * @returns 
+ */
+const addComent = async (req, res) => {
+    try {
+        //Id da postagem
+        const {id} = req.params;
+        //id do usuario
+        const userId = req. userId;
+        //Comentario feito
+        const {comment} = req.body;
+
+        //se não houver comentario
+        if(!comment){
+            return res.status(400).send({message: "Escreva alguma comentario!"});
+        }
+        //espera o serviço ao banco
+        await addComentService(id, comment, userId);
+        // resposta de coemntario adicionado
+        res.send({message: "Comentario adicionado com sucesso!"});
+
+    } catch (err) {
+        // caso dê erro 
+        res.status(500).send({ message: err.message });
+    }
+};
+/**
+ * Deleta um comentario feito pelo o usuario
+ * @param {*} req 
+ * @param {*} res 
+ */
+const deleteComent = async (req, res) => {
+    try {
+        //Id da postagem e id do comentario
+        const {idNews, idComent} = req.params;
+        //id do usuario
+        const userId = req.userId;
+        
+        //espera o serviço ao banco
+        const deletedComent = await deleteComentService(idNews, idComent, userId);
+        
+        //Encontro o comentario 
+        const findComent = deletedComent.comments.find(
+            (comment) => comment.idComent == idComent
+        );
+        
+        //se o comentario não encontrado
+        if(!findComent){
+            return res.status(404).send({message: "Comentario não encontrado!"});
+        }
+        //se o usuario não for o dono do comentario
+        if(findComent.userId !== userId){
+            return res.status(400).send({message: "Voce não pode deletar esse comentario"});
+        }
+
+        // resposta de coemntario adicionado
+        res.send({message: "Comentario removido com sucesso!"});
+
+    } catch (err) {
+        // caso dê erro 
+        res.status(500).send({ message: err.message });
+    }
 }
 // Exportando as funções
 export {
@@ -305,5 +381,7 @@ export {
     byUser,
     update,
     erase, 
-    likeNews
+    likeNews,
+    addComent,
+    deleteComent 
 }

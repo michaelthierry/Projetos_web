@@ -39,6 +39,27 @@ const deleteLikeNewsService = (idNews, userId ) => News.findOneAndUpdate(
     {$pull: {likes: {userId}}}
 );
 
+//Adiciona um comentario na postagem
+const addComentService = (idNews, coment, userId) => {
+    //Criando um id para o comentario
+    const idComent = Math.floor(Date.now() * Math.random()).toString(36);
+    //Adiciona o comentario no vetor de comentarios
+    return News.findOneAndUpdate(
+        {_id: idNews}, 
+        {
+            $push: {
+                comments: {idComent, userId, coment, createdAt: new Date()},
+            },
+        }
+    );
+}
+
+//Remove um comentario feito pelo o usuario
+const deleteComentService = (idNews, idComent, userId) => News.findOneAndUpdate(
+    {_id: idNews}, 
+    {$pull: {comments: {idComent, userId}}}
+);
+
 // Exporta todas as funções
 export { createService, 
         findAllService, 
@@ -50,5 +71,7 @@ export { createService,
         updateService,
         eraseService,
         likeNewsService,
-        deleteLikeNewsService
+        deleteLikeNewsService,
+        addComentService,
+        deleteComentService
     };

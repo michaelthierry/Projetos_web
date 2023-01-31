@@ -1,5 +1,5 @@
 import {Router} from "express";
-import {create, findAll, topNews, findById, searchByTitle, byUser, update, erase, likeNews} from "../controllers/news.controller.js"
+import {create, findAll, topNews, findById, searchByTitle, byUser, update, erase, likeNews, addComent, deleteComent} from "../controllers/news.controller.js"
 import { authMiddleware } from "../middlewares/auth.middleware.js";
 
 const router = Router();
@@ -22,6 +22,9 @@ router.patch("/:id", authMiddleware, update);
 router.delete("/:id", authMiddleware, erase);
 // Rota para dar like em uma noticia
 router.patch("/like/:id", authMiddleware, likeNews);
-
+// Rota para adicionar um comentario
+router.patch("/comment/:id", authMiddleware, addComent);
+// Rota para deletar um comentario
+router.patch("/comment/:idNews/:idComent", authMiddleware, deleteComent);
 
 export default router;
