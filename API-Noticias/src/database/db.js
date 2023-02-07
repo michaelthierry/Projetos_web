@@ -5,6 +5,7 @@ import mongoose from 'mongoose';
 const connectDatabase = () =>{
     //Mensagem para prompt
     console.log("Espere... estamos conectando ao banco")
+    mongoose.set("strictQuery", true);
     //Tenta conectar ao banco
     mongoose
     .connect(process.env.MONGODB_URI, 
